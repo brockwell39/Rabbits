@@ -162,6 +162,8 @@ class FoxTests(TestCase):
         As a highly-strung and hungry fox, I can't wait around for lengthy postgres
         database queries to complete, I need to know the nearest rabbit hole instantly
         so I can conserve my limited energy in the hunt.
+        
+        HINT: foxes are cunning and fast, they shouldn't appear in analytics
         """
 
         self.client.login(username="reynard", password="foxy")
