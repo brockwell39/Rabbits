@@ -49,22 +49,25 @@ class RabbitHolesTests(APITestCase):
         '''
         The RabbitHole serializer automatically counts the number of bunnies living in the hole
         '''
+        # test creates user and then RabbitHole object
         user1 = User.objects.create_user(username='user1', email='user1@test.com', password='rabbits')
         hole = RabbitHole.objects.create(owner=user1, location='location1')
-
+        # then creates 3 bunny objects and assigns them to the hole
+        # when I delete the 3rd bunny object the test still shows 4 != 3
         for name in ['Flopsy', 'Mopsy', 'CottonTail']:
             Bunny.objects.create(name=name, home=hole)
-
+        # creates other rabbit hole other bunny object and assigns its home to the other rabbit hole
         other_rabbit_hole = RabbitHole.objects.create(owner=user1, location='location2')
         other_bunny = Bunny.objects.create(name='Snowball', home=other_rabbit_hole)
-
+        # logs user in
         self.client.login(username=user1.username, password='rabbits')
 
         response = self.client.get(f'/rabbitholes/{hole.id}/')
-
+        #checks for 200 status code
         assert response.status_code == 200
-
+        # checks for 3 bunnies in the "hole"
         self.assertEqual(len(response.data.get('bunnies')), 3)
+        # test is seeing 4 bunnies instead of 3
         self.assertEqual(response.data.get('bunny_count'), 3)
 
     def test_creating_rabbit_holes_sets_user_from_automatically(self):
@@ -82,7 +85,7 @@ class RabbitHolesTests(APITestCase):
             'location': 'somewhere',
             'bunnies': []
         }
-
+        # this is shosing us the rabbithole of the wrong user
         response = self.client.post('/rabbitholes/', data=data)
 
         self.assertEqual(response.status_code, 201)
@@ -141,7 +144,5 @@ class RabbitHolesTests(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(set(names), set(response.data['family_members']))
         assert other_bunny.name not in response.data['family_members']
-
-
 
 

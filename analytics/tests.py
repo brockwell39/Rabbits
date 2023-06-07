@@ -30,9 +30,11 @@ class UserVisitLoggingTests(APITestCase):
         self.assertEqual(response.data.get('time'), datetime.datetime(2020, 6, 6, 9, tzinfo=pytz.UTC))
 
     def test_helloworld_logs_last_logins(self):
+        # failing
         """
         When we visit /helloworld/ as a logged-in user, then the system logs a UserVisit for us
         """
+        # creates a new user logs them in and the user visit should be 1
         user = User.objects.create_user(username='bob', password='bob')
         self.client.login(username='bob', password='bob')
         self.client.get('/helloworld/')

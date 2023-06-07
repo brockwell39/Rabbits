@@ -14,6 +14,8 @@ class HelloWorld(APIView):
     """
 
     def get(self, request, format=None):
+        # we need to increase the number of visits for the current user
+        
         data = {
             'version': 1.0,
             'time': timezone.now(),

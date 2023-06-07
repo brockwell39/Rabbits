@@ -16,7 +16,17 @@ class RabbitHoleViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         return super().create(request, *args, **kwargs)
 
-    def filter_queryset(self, queryset):
+    def filter_queryset(self, request, view, queryset):
+        # the filter needs to make use of has_object_permission but not quite sure how to get it to work
+        # print("Alex", permission_classes)
+        for q in queryset:
+            print(q)
+            print("Alex", RabbitHolePermissions.has_object_permission(self, request, view, q))
+        # print(queryset)
+        # for x in queryset:
+        #     print(x.has_object_permission)
+        # queryset = super().filter_queryset(queryset, permission_classes)
+        # print(permission_classes)
         return queryset
 
 
